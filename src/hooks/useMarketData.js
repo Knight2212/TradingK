@@ -67,21 +67,23 @@ export const useMarketData = (symbol, interval = '1m', initialPrice = 100) => {
                     scanner,
                     symbols: [tvSymbol],
                     columns: [
-                        "close", "change", "RSI", "MA20", "Recommend.All",
+                        "close", "change", "RSI", "SMA20", "Recommend.All",
                         "high", "low", "open", "volume", "EMA20"
                     ]
                 });
             } else {
-                // Fallback to direct fetch (useful for web development)
-                const response = await fetch(`https://scanner.tradingview.com/${scanner}/scan`, {
+                // Fallback to direct fetch via Vite proxy (web development)
+                // Use /tv-scan/ local proxy to avoid CORS
+                const response = await fetch(`/tv-scan/${scanner}/scan`, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         symbols: {
                             tickers: [tvSymbol],
                             query: { types: [] }
                         },
                         columns: [
-                            "close", "change", "RSI", "MA20", "Recommend.All",
+                            "close", "change", "RSI", "SMA20", "Recommend.All",
                             "high", "low", "open", "volume", "EMA20"
                         ]
                     })

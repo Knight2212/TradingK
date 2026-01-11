@@ -6,6 +6,13 @@ export default defineConfig({
   base: './',
   server: {
     port: 3000,
-    open: false // Disable auto-open in browser for Electron workflow
+    open: false, // Disable auto-open in browser for Electron workflow
+    proxy: {
+      '/tv-scan': {
+        target: 'https://scanner.tradingview.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/tv-scan/, '')
+      }
+    }
   }
 })
